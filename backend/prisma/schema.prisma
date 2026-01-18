@@ -1,0 +1,43 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  phone     String?
+  age       Int?
+  gender    String?
+  joinDate  DateTime @map("join_date")
+  goals     String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  records   Record[]
+
+  @@map("clients")
+}
+
+model Record {
+  id        Int      @id @default(autoincrement())
+  clientId  Int      @map("client_id")
+  date      DateTime
+  photo     String?  @db.Text
+  notes     String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@map("records")
+  @@index([clientId])
+}
