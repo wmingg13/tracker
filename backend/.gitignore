@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Production builds
+build/
+dist/
+.next/
+out/
+
+# Weird Files
+.vscode/
+
+# Environment secrets (very important!)
+.env
+*.local
+
+# Debug logs
+npm-debug.log*
+yarn-error.log*
